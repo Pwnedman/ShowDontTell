@@ -1,0 +1,224 @@
+<html>
+<head>
+<title>Show Don't Tell</title>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+
+<style>
+
+    #speed {
+      display: none;
+    }
+    #pause {
+      cursor: pointer;
+    }
+
+  #speed {
+  display: block; position: fixed;
+  z-index: 100; padding: 5px;
+  top: 15px; left: 26%;
+}
+
+#speed h4 {
+  display: inline-block; margin: 5px;
+}
+
+#speed .l {
+  float: left; margin: 1px 5px;
+}
+
+.pre { 
+  overflow: auto;
+  position: fixed; width: 35%;
+  padding: 24px 12px;
+  top: 90px; height: 25%; left: 26%;
+}
+
+.pre, #speed {
+  background-color: #7F0000; color: #a6c3d4;
+  transition: left 500ms;
+  border: 1px solid rgba(0,0,0,0.2);
+  box-sizing: border-box;
+  border-radius: 3px;
+  box-shadow: 0px 4px 0px 2px rgba(0,0,0,0.1);
+}
+
+.pre, #speed {
+  left: 60% 
+}
+
+#html-text {
+  transition: top 300ms;
+  top: calc(25% + 115px);
+}
+
+.container a {
+  text-decoration: none; color: #369;
+}
+
+.container p {
+  margin: 0;
+}  
+  
+</style>
+</head>
+
+<body>
+
+<div id="speed">
+    <div>
+      <h4>speed</h4>
+      <span id="pause">[pause]</span>
+    </div>
+    <span class="l">faster</span>
+    <input type="range" min="0" max="60" value="40" id="slider" class="l">
+    <span class="l">slower</span>
+  </div>
+
+<script>
+  (function() {
+    var nl, openCSS, openAnim, animCount, markup, styles, time, writeStyleChar, writeStyles, paused;
+
+
+    text = "\n \n/*\n * Hello world, my name is Pal 9000, and welcome to  Show Don't Tell \n * I am an automated script that builds this webpage live \n * This will be an introduction to basic CSS   \n \n * We'll begin by explaining what css is \n * css is meant to change how content is displayed  \n * content is basically anything you want people to see \n * Let's start coding the webpage now \n */\n <!DOCTYPE HTML> \n\n <html> \n <head> \n </head> \n \n <body id=\"ss\"> \n <h1 id=\"header\"> Welcome to Show Don't Tell </h1> \n <h2> This is the first lesson on css</h2> \n \n <p id=\"p1\">This is first paragraph element (&lt; p &gt;) we will be modifying</p> \n \n/*\n * Take a look in the html box \n * See that id attribute in the <p> tag \n * That is used to tell javascript and css which specific element \n * they are referring to \n * Let's finish building the page now \n */ \n <div id=\"right\"> \n <p class=\"white\"> This is gonna be white </p> \n <p class=\"white\"> This too will be white</p>\n </div> \n#p1{\n color:blue; \n font-size:15px; \n font:serif; \n font-style:italic; \n} \n \n/* \n * We just changed the font-size, font-style, font-style, and color of the <p> by id \n * You can also change the background color of a <div> \n * Colors are usually represented in hexa-decimal \n * You can go find some online easily \n * We'll do that in a bit \n * It's not that hard, you can use these properties to change how your page looks \n */ \n \n/* \n * There is also a class attribute \n * Which is used to organize many elements which \n * you want to work with at the same time \n */ \n.white{\n color:white;\n} \n#right{\n background-color:#7F0000; \n display: inline-block; \n} \n\n/* \n * The class attribute is reffered to by a \".\" and then the class name \n */ <h3> Organizing elements </h3> \n \n <div class=\"contain\"> \n <p> These paragraphs are in a div </p> \n <p> divs are used to group elements together </p> \n <p> Imagine a div is like a box around the content </p> \n <p> divs <strong> are not </strong> meant to be used for anything but organization </p> \n </div> \n \n/* \n * Using divs allow us to modify sections of the page at one time \n * Divs also allow us to make the elements inside the div \n * follow the style we want them to \n * Such as font and color \n */ \n.contain{\n color:#a6c3d4; \n font-size:16; \n background-color:#7F0000; display:inline-block;\n} \n \n/* \n * Don't worry about the \"display:\" we'll cover that later \n * Since divs are used to organize elements \n * If we move the div, the elements inside will move aswell \n * We can move the div by setting its position \n */ \n \n/* There are four types of positioning for elements in css \n * Absolute, Fixed, Relative and Static \n * Absolute means that the element is not affected by any other elements \n * And it is positioned according to its container \n * Fixed means that the element is not affected by any other elements \n * But it is positioned according the the page \n * Relative positioning means that the element is positioned relative to where it would be normally \n * These three types of positioning can overlap other elements \n * Static is the normal type of positioning \n * This cannot overlap other elements \n * and this type of positioning is not affected by the left right top and bottom properties \n  */ \n \n/*\n * You can move the elements through the left, right, top, and bottom properties \n * These properties are given values based on pixels \n * so an element with left:40px would be moved 40px to the right \n * because the left is 40 pixels from the left side \n */ \n.contain{\n position:fixed; \n left:40px; \n} \n/*\n * Becuase the position is fixed the div will not move and resize even if you move the browser window \n * And we moved it 40 pixels from the left side of the page \n * Go ahead and resize the page try it \n */ ";
+
+    nl = true;
+    openCSS = false;
+    openAmin = false;
+    animCount = 0;
+
+    writeStyleChar = function(which) {
+      markup = $('#html-text').html();
+      styles = $('#style-text').html();
+
+      switch (which) { 
+        case '@':
+          if (nl) {
+            //css
+            styles += '\n\n' + which;
+            openCSS = true;
+            openAnim = true;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '/':
+          if (nl) {
+            //css
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+            openCSS = false;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '.':
+          if (nl) {
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '#':
+          if (nl) {
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '}':
+          if (openAnim) {
+            styles += which;
+            if (animCount > 1) {
+              animCount = 0;
+              openAnim = false;
+              openCSS = true;
+            } else {
+              animCount += 1;
+              openAnim = true;
+              openCSS = true;
+            }
+          } else if (openCSS) {
+            styles += which;
+            openCSS = false;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        default:
+          if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+      }
+
+      nl = ((which === '\n') ? true : false);
+
+      $('#style-text').html(styles);
+      $('#html-text').html(markup);
+      myMarkup = $("<div />").html(markup).text();
+      $('.container').html(myMarkup);
+      $('#style-tag').html(styles);
+    };
+
+    writeStyles = function(message) {
+      if (!paused) {
+        var pre;
+        if (index < message.length) {
+          pre = document.getElementById('style-text');
+          pre.scrollTop = pre.scrollHeight;
+          pres = document.getElementById('html-text');
+          pres.scrollTop = pres.scrollHeight;
+          writeStyleChar(message[index++]);
+          setTimeout((function() {
+            writeStyles(message, time);
+          }), time);
+        }
+      }
+    };
+
+    $('body').append("  <style id=\"style-tag\"></style><div class=\"container\"></div><pre class=\"pre\" id=\"html-text\"></pre><pre class=\"pre\" id=\"style-text\"></pre>");
+
+    var time = 40;
+    index = 0;
+
+    $('#slider').on('input change', function() {
+      time = $(this).val();
+    })
+    $('#pause').on('click', function() {
+      if (paused) {
+        paused = false;
+        $(this).text('[pause]');
+        writeStyles(text);
+      } else {
+        paused = true;
+        $(this).text('[resume]');
+      }
+    })
+
+    writeStyles(text);
+
+  }).call(this);
+  </script>
+</body>
+
+</html>

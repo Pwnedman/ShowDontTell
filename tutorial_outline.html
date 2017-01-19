@@ -1,0 +1,224 @@
+<html>
+<head>
+<title>Show Don't Tell</title>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+
+<style>
+
+    #speed {
+      display: none;
+    }
+    #pause {
+      cursor: pointer;
+    }
+
+  #speed {
+  display: block; position: fixed;
+  z-index: 100; padding: 5px;
+  top: 15px; left: 26%;
+}
+
+#speed h4 {
+  display: inline-block; margin: 5px;
+}
+
+#speed .l {
+  float: left; margin: 1px 5px;
+}
+
+.pre { 
+  overflow: auto;
+  position: fixed; width: 35%;
+  padding: 24px 12px;
+  top: 90px; height: 25%; left: 26%;
+}
+
+.pre, #speed {
+  background-color: #7F0000; color: #a6c3d4;
+  transition: left 500ms;
+  border: 1px solid rgba(0,0,0,0.2);
+  box-sizing: border-box;
+  border-radius: 3px;
+  box-shadow: 0px 4px 0px 2px rgba(0,0,0,0.1);
+}
+
+.pre, #speed {
+  left: 60% 
+}
+
+#html-text {
+  transition: top 300ms;
+  top: calc(25% + 115px);
+}
+
+.container a {
+  text-decoration: none; color: #369;
+}
+
+.container p {
+  margin: 0;
+}  
+  
+</style>
+</head>
+
+<body>
+
+<div id="speed">
+    <div>
+      <h4>speed</h4>
+      <span id="pause">[pause]</span>
+    </div>
+    <span class="l">faster</span>
+    <input type="range" min="0" max="20" value="16" id="slider" class="l">
+    <span class="l">slower</span>
+  </div>
+
+<script>
+  (function() {
+    var nl, openCSS, openAnim, animCount, markup, styles, time, writeStyleChar, writeStyles, paused;
+
+
+    text = "\n \n/*\n * Hello world, my name is Pal 9000, and welcome to  Show Don't Tell \n * I am an automated script that builds this webpage live \n * This will be a tutorial on LESSON NAME  \n *LESSON DESCRIPTION \n */\n <h1>The HTML Starts here </h1> \n <p> This is code </p> \n";
+
+    nl = true;
+    openCSS = false;
+    openAmin = false;
+    animCount = 0;
+
+    writeStyleChar = function(which) {
+      markup = $('#html-text').html();
+      styles = $('#style-text').html();
+
+      switch (which) {
+        case '@':
+          if (nl) {
+            //css
+            styles += '\n\n' + which;
+            openCSS = true;
+            openAnim = true;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '/':
+          if (nl) {
+            //css
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+            openCSS = false;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '.':
+          if (nl) {
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '#':
+          if (nl) {
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '}':
+          if (openAnim) {
+            styles += which;
+            if (animCount > 1) {
+              animCount = 0;
+              openAnim = false;
+              openCSS = true;
+            } else {
+              animCount += 1;
+              openAnim = true;
+              openCSS = true;
+            }
+          } else if (openCSS) {
+            styles += which;
+            openCSS = false;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        default:
+          if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+      }
+
+      nl = ((which === '\n') ? true : false);
+
+      $('#style-text').html(styles);
+      $('#html-text').html(markup);
+      myMarkup = $("<div />").html(markup).text();
+      $('.container').html(myMarkup);
+      $('#style-tag').html(styles);
+    };
+
+    writeStyles = function(message) {
+      if (!paused) {
+        var pre;
+        if (index < message.length) {
+          pre = document.getElementById('style-text');
+          pre.scrollTop = pre.scrollHeight;
+          pres = document.getElementById('html-text');
+          pres.scrollTop = pres.scrollHeight;
+          writeStyleChar(message[index++]);
+          setTimeout((function() {
+            writeStyles(message, time);
+          }), time);
+        }
+      }
+    };
+
+    $('body').append("  <style id=\"style-tag\"></style><div class=\"container\"></div><pre class=\"pre\" id=\"html-text\"></pre><pre class=\"pre\" id=\"style-text\"></pre>");
+
+    var time = 16;
+    index = 0;
+
+    $('#slider').on('input change', function() {
+      time = $(this).val();
+    })
+    $('#pause').on('click', function() {
+      if (paused) {
+        paused = false;
+        $(this).text('[pause]');
+        writeStyles(text);
+      } else {
+        paused = true;
+        $(this).text('[resume]');
+      }
+    })
+
+    writeStyles(text);
+
+  }).call(this);
+  </script>
+</body>
+
+</html>

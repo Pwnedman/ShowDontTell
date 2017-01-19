@@ -1,0 +1,224 @@
+<html>
+<head>
+<title>Show Don't Tell</title>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+
+<style>
+
+    #speed {
+      display: none;
+    }
+    #pause {
+      cursor: pointer;
+    }
+
+  #speed {
+  display: block; position: fixed;
+  z-index: 100; padding: 5px;
+  top: 15px; left: 26%;
+}
+
+#speed h4 {
+  display: inline-block; margin: 5px;
+}
+
+#speed .l {
+  float: left; margin: 1px 5px;
+}
+
+.pre { 
+  overflow: auto;
+  position: fixed; width: 35%;
+  padding: 24px 12px;
+  top: 90px; height: 25%; left: 26%;
+}
+
+.pre, #speed {
+  background-color: #7F0000; color: #a6c3d4;
+  transition: left 500ms;
+  border: 1px solid rgba(0,0,0,0.2);
+  box-sizing: border-box;
+  border-radius: 3px;
+  box-shadow: 0px 4px 0px 2px rgba(0,0,0,0.1);
+}
+
+.pre, #speed {
+  left: 60% 
+}
+
+#html-text {
+  transition: top 300ms;
+  top: calc(25% + 115px);
+}
+
+.container a {
+  text-decoration: none; color: #369;
+}
+
+.container p {
+  margin: 0;
+}  
+  
+</style>
+</head>
+
+<body>
+
+<div id="speed">
+    <div>
+      <h4>speed</h4>
+      <span id="pause">[pause]</span>
+    </div>
+    <span class="l">faster</span>
+    <input type="range" min="0" max="20" value="16" id="slider" class="l">
+    <span class="l">slower</span>
+  </div>
+
+<script>
+  (function() {
+    var nl, openCSS, openAnim, animCount, markup, styles, time, writeStyleChar, writeStyles, paused;
+
+
+    text = "\n \n/*\n * Hello world, my name is Pal 9000, and welcome to  Show Don't Tell \n * I am an automated script that builds this webpage live \n * This will be a tutorial on Organizing Information  \n * I'll show you how to set aside text, make lists, and make tables for displaying information \n */ \n \n <DOCTYPE! HTML> \n <html> \n <head> \n </head> \n <body> \n \n <p> Lists are used to organize information so that the user has an easier time reading </p> \n <p> There are unordered lists, ordered lists, and definition lists </p> \n <p> Unordered lists bullet point information and consist of a  &lt; ul &gt; tag </p> \n <p> Each individual item in the list also needs a list item tag, written as &lt; li &gt; </p> \n \n <ul> \n <li> This is the first item </li> \n <li> This is the second item </li> \n </ul> \n \n <p> Ordered lists are very similar to unordered lists, but number the elements for more organization </p> \n <p> Syntactically ordered lists are the same as unordered lists, except you use the &lt; ol &gt; tag instead of the &lt; ul &gt; tag </p> \n \n <ol> \n <li> This is the first item </li> \n <li> This is the second item </li> \n </ol> \n \n <p> Definition lists provide descriptions beneath each item </p> \n <p> The list is wrapped in a &lt; dl &gt; tag, each item uses a &lt; dt &gt; tag, and the descriptions use &lt; dd &gt; tag </p> \n \n <dl> \n <dt> Item 1 </dt> \n <dd> Description of the first item </dd> \n <dt> Item 2 </dt> \n <dd> Description of item 2 </dd> \n </dl> \n \n <p> Tables can be used to present and arrange information in a easy to understand visual format </p> \n <p> Tables are made using the &lt; table &gt; tag </p> \n <p> Each row is defined in &lt; tr &gt; tags and each item in the row (adding an item adds a column) is defined  with &lt; td &gt; tags </p> \n \n <table> \n <tr> \n <td>R1_C1</td> \n <td>R1_C2 </td> \n </tr> \n <tr> \n <td>R2_C1</td> \n <td>R2_C2</td> \n </tr> \n </table> \n \n <p> If you feel like the table is a bit bare don't worry </p> \n <p> Tables can be stylized to have borders and other visual aspects through CSS <p> \n <p> That's all for data organization, I hope this helps in your information presentation </p> \n </body> \n </hmtl> ";
+
+    nl = true;
+    openCSS = false;
+    openAmin = false;
+    animCount = 0;
+
+    writeStyleChar = function(which) {
+      markup = $('#html-text').html();
+      styles = $('#style-text').html();
+
+      switch (which) {
+        case '@':
+          if (nl) {
+            //css
+            styles += '\n\n' + which;
+            openCSS = true;
+            openAnim = true;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '/':
+          if (nl) {
+            //css
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+            openCSS = false;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '.':
+          if (nl) {
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '#':
+          if (nl) {
+            styles += '\n\n' + which;
+            openCSS = true;
+          } else if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        case '}':
+          if (openAnim) {
+            styles += which;
+            if (animCount > 1) {
+              animCount = 0;
+              openAnim = false;
+              openCSS = true;
+            } else {
+              animCount += 1;
+              openAnim = true;
+              openCSS = true;
+            }
+          } else if (openCSS) {
+            styles += which;
+            openCSS = false;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+        break;
+
+        default:
+          if (openCSS) {
+            styles += which;
+          } else if (!openCSS) {
+            //html
+            markup += which;
+          }
+      }
+
+      nl = ((which === '\n') ? true : false);
+
+      $('#style-text').html(styles);
+      $('#html-text').html(markup);
+      myMarkup = $("<div />").html(markup).text();
+      $('.container').html(myMarkup);
+      $('#style-tag').html(styles);
+    };
+
+    writeStyles = function(message) {
+      if (!paused) {
+        var pre;
+        if (index < message.length) {
+          pre = document.getElementById('style-text');
+          pre.scrollTop = pre.scrollHeight;
+          pres = document.getElementById('html-text');
+          pres.scrollTop = pres.scrollHeight;
+          writeStyleChar(message[index++]);
+          setTimeout((function() {
+            writeStyles(message, time);
+          }), time);
+        }
+      }
+    };
+
+    $('body').append("  <style id=\"style-tag\"></style><div class=\"container\"></div><pre class=\"pre\" id=\"html-text\"></pre><pre class=\"pre\" id=\"style-text\"></pre>");
+
+    var time = 16;
+    index = 0;
+
+    $('#slider').on('input change', function() {
+      time = $(this).val();
+    })
+    $('#pause').on('click', function() {
+      if (paused) {
+        paused = false;
+        $(this).text('[pause]');
+        writeStyles(text);
+      } else {
+        paused = true;
+        $(this).text('[resume]');
+      }
+    })
+
+    writeStyles(text);
+
+  }).call(this);
+  </script>
+</body>
+
+</html>
